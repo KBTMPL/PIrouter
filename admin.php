@@ -9,6 +9,20 @@
 	$dnsmasq_data = file('dnsmasq.php', FILE_IGNORE_NEW_LINES); // poczatekd koniecd czas 1-3
 	$interfaces2_data = file('interfaces2.php', FILE_IGNORE_NEW_LINES); // isenabled adres maska brama dns 1-5
 	
+	function is_connected()
+	{
+    	$connected = @fsockopen("www.agh.edu.pl", 80); 
+
+    	if ($connected){
+        	$is_conn = true;
+        	fclose($connected);
+    	} else {
+        	$is_conn = false;
+    	}
+    	return $is_conn;
+
+}
+
 	/* naprawić ID skaczące po dokumencie - gdzie i jak */
 	/* stock value password */
 ?>
@@ -28,10 +42,10 @@
 
 <body>
 
-	<header  id="TOP">
+	<header id="TOP">
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 		
-			<a class="navbar-brand <?php if(!isset($_SESSION['guest'])) { echo('text-danger'); } ?>" href="#TOP">PIrouter</a>
+			<a onclick="activate('')" class="navbar-brand <?php if(!isset($_SESSION['guest'])) { echo('text-danger'); } ?>" href="#TOP">PIrouter</a>
 			
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -40,14 +54,17 @@
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 				<ul class="navbar-nav mr-auto">
 				
-					<li class="nav-item active">
-						<a class="nav-link" href="#AP">Punkt dostępu</a>
+					<li class="nav-item" id="stat">
+						<a class="nav-link" onclick="activate('stat')"  href="#STAT">Status</a>
 					</li>
-					<li class="nav-item active">
-						<a class="nav-link" href="#LAN">Sieć lokalna</a>
+					<li class="nav-item" id="ap">
+						<a class="nav-link" onclick="activate('ap')" href="#AP">Punkt dostępu</a>
 					</li>
-					<li class="nav-item active">
-						<a class="nav-link" href="#WAN">Sieć rozległa</a>
+					<li class="nav-item" id="lan">
+						<a class="nav-link" onclick="activate('lan')" href="#LAN">Sieć lokalna</a>
+					</li>
+					<li class="nav-item" id="wan">
+						<a class="nav-link" onclick="activate('wan')" href="#WAN">Sieć rozległa</a>
 					</li>
 					<li class="nav-item active">
 						<a class="text-warning nav-link" href="reboot.php">Uruchom ponownie</a>
@@ -56,7 +73,7 @@
 						<a onclick="fcall('poweroff.php');" class="text-danger nav-link" href="#">Wyłącz</a>
 					</li>
 					<li class="nav-item active">
-						<a class="nav-link" href="logout.php">Wyloguj się</a>
+						<a class="nav-link text-info" href="logout.php">Wyloguj się</a>
 					</li>
 					
 				</ul>
@@ -65,6 +82,13 @@
 	</header>
 
 	<main class="container">
+
+<div id="STAT">
+	<h3 class="mt-5 text-center">Status urządzenia</h3>
+	<?php if(is_connected() == true) { echo('<div class="alert alert-info text-center">Router posiada połączenie z internetem</div>'); } else { echo('<div class="alert alert-warning text-center">Router nie posiada połączenia z internetem</div>'); } ?>
+</div>
+
+	<hr />
 
 <div id="AP">
 	
@@ -167,7 +191,7 @@
 		<div class="form-group text-center">
 			<p class="small">aby skonfigurować adres statyczny wyłącz klienta DHCP</p>
 				<label for="dhcp">Klient DHCP:</label>
-				<select id="dhcp" name="dhcp">
+				<select onchange="sh_wan_static_field()" id="dhcp" name="dhcp">
 					<?php  if ($interfaces2_data[1] == 'tak') {
 						echo('<option value="tak" selected="selected">tak</option>');
 						echo('<option value="nie">nie</option>');
@@ -178,7 +202,9 @@
 					?>
 				</select>
 		</div>
-		
+        
+    <div id="wan_static">
+        
 		<div class="form-group">
 			<label for="adresw">Adres IP:</label>
 			<input type="text" class="form-control" id="adresw" name="adres" placeholder="xxx.xxx.xxx.xxx" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" autocomplete="off" value="<?php echo($interfaces2_data[2]); ?>" />
@@ -199,6 +225,8 @@
 			<input type="text" class="form-control" id="dns" name="dns" placeholder="xxx.xxx.xxx.xxx" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" autocomplete="off" value="<?php echo($interfaces2_data[5]); ?>"  />
 		</div>	
 	
+    </div>    
+        
 		<div class="form-group text-center row">
 			<div class="col-md-12">
 				<label for="reboot3">Zastosować konfigurację?</label>
@@ -215,7 +243,7 @@
 	</form>
 
 </div>
-	
+
 	</main>
 
 	<footer class="footer">
@@ -233,6 +261,25 @@
 			$.get(file);
 			return false;
 		}
+		function activate(id) {
+			var anchors = ["stat", "ap", "lan", "wan", "top"];
+			for ( i=0; i<=anchors.length; i++) {
+				if (anchors[i] == id) {
+				document.getElementById(id).classList.add("active");
+				} else {
+				document.getElementById(anchors[i]).classList.remove("active")
+				}
+			}
+		}
+		
+		var wan_static_field = document.getElementById("dhcp").value;
+		console.log(wan_static_field);
+		if (wan_static_field == "tak") { $(wan_static).hide(); }
+		
+		function sh_wan_static_field() {
+			if (document.getElementById("dhcp").value == "tak") { $(wan_static).hide(); } else { $(wan_static).show(); }
+		}
+		
 	</script>
 </body>
 </html>
