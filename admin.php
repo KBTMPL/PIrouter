@@ -40,7 +40,7 @@
 	<link href="style.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="update_test_image()">
 
 	<header id="TOP">
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -85,7 +85,31 @@
 
 <div id="STAT">
 	<h3 class="mt-5 text-center">Status urządzenia</h3>
+	
 	<?php if(is_connected() == true) { echo('<div class="alert alert-info text-center">Router posiada połączenie z internetem</div>'); } else { echo('<div class="alert alert-warning text-center">Router nie posiada połączenia z internetem</div>'); } ?>
+	
+	<div class="alert alert-info">
+		<div class="row text-center">
+			<div class="col-md-12 text-center">
+				Test prędkości internetu
+			</div>
+		</div>
+		
+		<div class="row text-center" id="test">
+			<div class="col-md-12 text-center">
+				<img id="test_img" class="img-fluid mt-3 mb-3" src="testoutput.png" />
+			</div>
+		</div>
+		
+		<div class="row text-center">
+			<div class="col-md-12">
+				<button type="button" class="btn btn-default btn-sm" onclick="$(test).toggle()">Test prędkości</button>
+			
+				<button type="button" class="btn btn-default btn-sm" onclick="perform_speedtest()">Uruchom test</button>
+			</div>
+		</div>
+	</div>
+	
 </div>
 
 	<hr />
@@ -238,7 +262,7 @@
 			<button type="submit" name="submit" class="btn btn-default">Zapisz</button>
 		</div>
 		
-		<?php if(!isset($_SESSION['guest'])) { echo('<input type="hidden" id="check2"  name="check" value="1" />'); } ?> 
+		<?php if(!isset($_SESSION['guest'])) { echo('<input type="hidden" id="check3"  name="check" value="1" />'); } ?> 
     
 	</form>
 
@@ -257,10 +281,14 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script> 
+	
+		// running scripts in background
 		function fcall(file) {
 			$.get(file);
 			return false;
 		}
+		
+		// animation of active anchors in navbar
 		function activate(id) {
 			var anchors = ["stat", "ap", "lan", "wan", "top"];
 			for ( i=0; i<=anchors.length; i++) {
@@ -272,14 +300,34 @@
 			}
 		}
 		
+		// default visibility of static conf
 		var wan_static_field = document.getElementById("dhcp").value;
-		console.log(wan_static_field);
 		if (wan_static_field == "tak") { $(wan_static).hide(); }
 		
+		// onevent change of static conf visibility
 		function sh_wan_static_field() {
 			if (document.getElementById("dhcp").value == "tak") { $(wan_static).hide(); } else { $(wan_static).show(); }
 		}
 		
+		// reload speedtest image func
+		function update_test_image() {
+			var d = new Date();				
+			document.getElementById("test_img").src="testoutput.png?=" + d.getTime();
+		}
+		
+		// default visibility of speedtest img div
+		$(test).hide();
+		
+		// onclick speedtest perform and image reload
+		function perform_speedtest() {
+			fcall('speed.php')
+			window.alert("Test prędkości w trakcie wykonania");
+			setTimeout(function(){
+			update_test_image();
+			}, 40000);
+			
+			
+		}
 	</script>
 </body>
 </html>
