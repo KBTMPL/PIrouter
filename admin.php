@@ -81,7 +81,7 @@
 		</nav>
 	</header>
 
-	<main class="container">
+	<main class="container" id="main">
 
 <div id="STAT">
 	<h3 class="mt-5 text-center">Status urządzenia</h3>
@@ -328,6 +328,16 @@
 			
 			
 		}
+		/*
+		// define width of main
+		var w = window.innerWidth;
+		var h = window.innerHeight;
+		if (w > h) {
+			document.getElementById("main").classList.add("w-25");
+		} else {
+			document.getElementById("main").classList.remove("w-25");
+		}
+		*/
 	</script>
 </body>
 </html>
