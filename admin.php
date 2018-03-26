@@ -45,7 +45,7 @@
 	<header id="TOP">
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 		
-			<a onclick="activate('')" class="navbar-brand <?php if(!isset($_SESSION['guest'])) { echo('text-danger'); } ?>" href="#TOP">PIrouter</a>
+			<a onclick="activate('')" class="navbar-brand <?php if(!isset($_SESSION['guest'])) { echo('text-danger'); } else { echo('text-success'); } ?>" href="#TOP">PIrouter</a>
 			
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -89,23 +89,21 @@
 	<?php if(is_connected() == true) { echo('<div class="alert alert-info text-center">Router posiada połączenie z internetem</div>'); } else { echo('<div class="alert alert-warning text-center">Router nie posiada połączenia z internetem</div>'); } ?>
 	
 	<div class="alert alert-info">
-		<div class="row text-center">
-			<div class="col-md-12 text-center">
-				Test prędkości internetu
-			</div>
+		<div class="row text-center mb-2">
+			<div class="col-md-12 text-center">Test prędkości internetu</div>
 		</div>
 		
 		<div class="row text-center" id="test">
 			<div class="col-md-12 text-center">
-				<img id="test_img" class="img-fluid mt-3 mb-3" src="testoutput.png" />
+				<img id="test_img" class="img-fluid mt-2 mb-2" src="testoutput.png" />
 			</div>
 		</div>
 		
-		<div class="row text-center">
+		<div class="row text-center mt-2">
 			<div class="col-md-12">
-				<button type="button" class="btn btn-default btn-sm" onclick="$(test).toggle()">Test prędkości</button>
+				<button type="button" class="btn btn-default btn-sm btn-dark" onclick="$(test).toggle()">Pokaż wynik</button>
 			
-				<button type="button" class="btn btn-default btn-sm" onclick="perform_speedtest()">Uruchom test</button>
+				<button type="button" class="btn btn-default btn-sm btn-dark" onclick="perform_speedtest()">Uruchom test</button>
 			</div>
 		</div>
 	</div>
@@ -145,7 +143,7 @@
 		</div>
 		
 		<div class="text-center">
-			<button type="submit" name="submit" class="btn btn-default">Zapisz</button>
+			<button type="submit" name="submit" class="btn btn-dark">Zapisz</button>
 		</div>
 		
 		<?php if(!isset($_SESSION['guest'])) { echo('<input type="hidden" id="check1"  name="check" value="1" />'); } ?> 
@@ -195,7 +193,7 @@
 		</div>
 	
 		<div class="text-center">
-			<button type="submit" name="submit" class="btn btn-default">Zapisz</button>
+			<button type="submit" name="submit" class="btn btn-dark">Zapisz</button>
 		</div>
 		
 		<?php if(!isset($_SESSION['guest'])) { echo('<input type="hidden" id="check2"  name="check" value="1" />'); } ?> 
@@ -259,7 +257,7 @@
 		</div>
 	
 		<div class="text-center">
-			<button type="submit" name="submit" class="btn btn-default">Zapisz</button>
+			<button type="submit" name="submit" class="btn btn-dark">Zapisz</button>
 		</div>
 		
 		<?php if(!isset($_SESSION['guest'])) { echo('<input type="hidden" id="check3"  name="check" value="1" />'); } ?> 
@@ -321,7 +319,7 @@
 		// onclick speedtest perform and image reload
 		function perform_speedtest() {
 			fcall('speed.php')
-			window.alert("Test prędkości w trakcie wykonania");
+			window.alert("Test prędkości w trakcie - odczekaj mniej niż minutę.");
 			setTimeout(function(){
 			update_test_image();
 			}, 40000);
