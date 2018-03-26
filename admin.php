@@ -88,7 +88,7 @@
 	
 	<?php if(is_connected() == true) { echo('<div class="alert alert-info text-center">Router posiada połączenie z internetem</div>'); } else { echo('<div class="alert alert-warning text-center">Router nie posiada połączenia z internetem</div>'); } ?>
 	
-	<div class="alert alert-info">
+	<div class="alert <?php if(is_connected() == true) { echo('alert-info'); } else { echo('alert-danger'); } ?>">
 		<div class="row text-center mb-2">
 			<div class="col-md-12 text-center">Test prędkości internetu</div>
 		</div>
@@ -103,7 +103,7 @@
 			<div class="col-md-12">
 				<button type="button" class="btn btn-default btn-sm btn-dark" onclick="$(test).toggle()">Pokaż wynik</button>
 			
-				<button type="button" class="btn btn-default btn-sm btn-dark" onclick="perform_speedtest()">Uruchom test</button>
+				<?php if(is_connected() == true) { echo('<button type="button" class="btn btn-default btn-sm btn-dark" onclick="perform_speedtest()">Uruchom test</button>'); } ?>
 			</div>
 		</div>
 	</div>
@@ -270,7 +270,7 @@
 
 	<footer class="footer">
 		<div class="container">
-			<span class="text-muted">PIrouter - Krzysztof Bulanda 2018</span>
+			<span class="text-muted"><a class="text-muted" target="_blank" href="https://github.com/KBTMPL/PIrouter">PIrouter</a> - Krzysztof Bulanda 2018</span>
 		</div>
     </footer>
 

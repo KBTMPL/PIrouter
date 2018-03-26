@@ -45,7 +45,7 @@
 
 	<footer class="footer">
 		<div class="container">
-			<span class="text-muted">PIrouter - Krzysztof Bulanda 2018</span>
+			<span class="text-muted"><a class="text-muted" target="_blank" href="https://github.com/KBTMPL/PIrouter">PIrouter</a> - Krzysztof Bulanda 2018</span>
 		</div>
     </footer>
 
