@@ -140,12 +140,12 @@
 	
 		<div class="form-group">
 			<label for="ssid">SSID:</label>
-			<input type="text" class="form-control" id="ssid" name="ssid" pattern=".{1,100}" autocomplete="off" value="<?php echo($hostapd_data[1]); ?>" required />
+			<input type="text" class="form-control" id="ssid" name="ssid" pattern=".{1,100}" autocomplete="off" value="<?php echo($hostapd_data[1]); ?>" placeholder="przynajmniej jeden znak" required />
 		</div>
 		
 		<div class="form-group">
 			<label for="wpa_passphrase">Hasło:</label>
-			<input type="password" class="form-control" id="wpa_passphrase" name="wpa_passphrase" pattern=".{8,63}" autocomplete="off" value="<?php echo($hostapd_data[3]); ?>" required />
+			<input type="password" class="form-control" id="wpa_passphrase" name="wpa_passphrase" pattern=".{8,63}" autocomplete="off" value="<?php echo($hostapd_data[3]); ?>" placeholder="od 8 do 63 znaków" required />
 		</div>
 		
 		<div class="form-group text-center row">

@@ -3,6 +3,12 @@
     if(!isset($_SESSION['login'])) {
         header('LOCATION:index.php'); die();
     }
+	
+	/*
+	if(isset($_SESSION['guest'])) {
+		die();
+    }
+	*/
 
 	exec ("speedtest --simple --share", $output);
 	$img = "testoutput.png";
