@@ -4,10 +4,14 @@
         header('LOCATION:index.php'); die();
     }
 	
+	// load data forms currently set
+	
 	$hostapd_data = file('hostapd.php', FILE_IGNORE_NEW_LINES); // name channel pwd 1-3
 	$interfaces_data = file('interfaces.php', FILE_IGNORE_NEW_LINES); // adres maska 1-2
 	$dnsmasq_data = file('dnsmasq.php', FILE_IGNORE_NEW_LINES); // poczatekd koniecd czas 1-3
 	$interfaces2_data = file('interfaces2.php', FILE_IGNORE_NEW_LINES); // isenabled adres maska brama dns 1-5
+	
+	// check internet access
 	
 	function is_connected()
 	{
@@ -22,6 +26,10 @@
     	return $is_conn;
 
 }
+
+	// load current samba shares
+	
+	exec ("ls /media/", $samba_shares);
 
 	/* naprawić ID skaczące po dokumencie - gdzie i jak */
 	/* stock value password */
@@ -95,7 +103,7 @@
 		
 		<div class="row text-center" id="test">
 			<div class="col-md-12 text-center">
-				<img id="test_img" class="img-fluid mt-2 mb-2" src="testoutput.png" />
+				<img id="test_img" alt="test_img" class="img-fluid mt-2 mb-2" src="testoutput.png" />
 			</div>
 		</div>
 		
@@ -106,6 +114,18 @@
 				<?php if(is_connected() == true) { echo('<button type="button" class="btn btn-default btn-sm btn-dark" onclick="perform_speedtest()">Uruchom test</button>'); } ?>
 			</div>
 		</div>
+	</div>
+	
+	<div class="alert alert-info text-center">
+	
+		<p>Aktywne udziały serwera samba</p>
+	
+		<?php 
+			$i = 1;
+			foreach ($samba_shares as $row) {
+				echo($row.' ');
+			}
+		?>
 	</div>
 	
 </div>
