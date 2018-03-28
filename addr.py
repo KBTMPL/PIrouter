@@ -25,13 +25,12 @@ def redirect_reboot():
 	print("<html><head><title>Ustawienie LAN</title>")
 	print("<meta charset='UTF-8'>")
 	print("<meta name='viewport' content='initial-scale=1.0'>")
-	print("<meta http-equiv='refresh' content='1; url=reboot.php'>")
+	print("<meta http-equiv='refresh' content='0; url=reboot.php'>")
 	print("</head></html>")
 	
 #cgi.test()
 form = cgi.FieldStorage()
 
-check = "None"
 reboot = "None"
 
 adres = str(form.getvalue("adres"))
@@ -41,49 +40,48 @@ poczatekd = str(form.getvalue("poczatekd"))
 koniecd = str(form.getvalue("koniecd"))
 czas = str(form.getvalue("czas"))
 
-check = str(form.getvalue("check"))
 reboot = str(form.getvalue("reboot"))
 
 cidr = str(netmask_to_cidr(maska))
+
 start = ipaddress.ip_address(poczatekd)
 end = ipaddress.ip_address(koniecd)
-net = ipaddress.IPv4Interface(adres + "/" + cidr)
+inter = ipaddress.IPv4Interface(adres + "/" + cidr)
+net = ipaddress.IPv4Network(inter.network)
 
 condition = (start < end) and (start in net) and (end in net)
 
+#condition = 1
+
 if condition:
-	if check == "1":
-		if reboot == "on":
-			redirect_reboot()
+	alines = open('/etc/network/interfaces').read().splitlines()
+	alines[15] = "address " + adres
+	alines[16] = "netmask " + maska
+	open('/etc/network/interfaces','w').write('\n'.join(alines))
 
-	if check == "None":
+	blines = open('interfaces.php').read().splitlines()
+	blines[1] = adres
+	blines[2] = maska
+	open('interfaces.php','w').write('\n'.join(blines))
+
+	clines = open('/etc/dnsmasq.conf').read().splitlines()
+	clines[0] = "dhcp-range=" + poczatekd + "," + koniecd + "," + czas
+	open('/etc/dnsmasq.conf','w').write('\n'.join(clines))
+
+	dlines = open('dnsmasq.php').read().splitlines()
+	dlines[1] = poczatekd
+	dlines[2] = koniecd
+	dlines[3] = czas
+	open('dnsmasq.php','w').write('\n'.join(dlines))
+
+	elines = open('/etc/samba/smb.conf').read().splitlines()
+	elines[37] = "  hosts allow = " + str(net)
+	open('/etc/samba/smb.conf','w').write('\n'.join(elines))
+	
+	if reboot == "None":
 		redirect_admin()
-
-	if check == "1":
-		alines = open('/etc/network/interfaces').read().splitlines()
-		alines[15] = "address " + adres
-		alines[16] = "netmask " + maska
-		open('/etc/network/interfaces','w').write('\n'.join(alines))
-
-		blines = open('interfaces.php').read().splitlines()
-		blines[1] = adres
-		blines[2] = maska
-		open('interfaces.php','w').write('\n'.join(blines))
-
-		clines = open('/etc/dnsmasq.conf').read().splitlines()
-		clines[0] = "dhcp-range=" + poczatekd + "," + koniecd + "," + czas
-		open('/etc/dnsmasq.conf','w').write('\n'.join(clines))
-
-		dlines = open('dnsmasq.php').read().splitlines()
-		dlines[1] = poczatekd
-		dlines[2] = koniecd
-		dlines[3] = czas
-		open('dnsmasq.php','w').write('\n'.join(dlines))
-
-		elines = open('/etc/samba/smb.conf').read().splitlines()
-		elines[37] = "  hosts allow = " + net.network.with_netmask
-		open('/etc/samba/smb.conf','w').write('\n'.join(elines))
-		if reboot == "None":
-			redirect_admin()
+	elif reboot == "on":
+		redirect_reboot()
+	
 else:
 	redirect_admin()

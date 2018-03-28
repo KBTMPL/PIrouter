@@ -25,13 +25,12 @@ def redirect_reboot():
 	print("<html><head><title>Ustawienie WAN</title>")
 	print("<meta charset='UTF-8'>")
 	print("<meta name='viewport' content='initial-scale=1.0'>")
-	print("<meta http-equiv='refresh' content='1; url=reboot.php'>")
+	print("<meta http-equiv='refresh' content='0; url=reboot.php'>")
 	print("</head></html>")
 
 #cgi.test()
 form = cgi.FieldStorage()
 
-check = "None"
 reboot = "None"
 
 dhcp = str(form.getvalue("dhcp"))
@@ -44,9 +43,6 @@ check = str(form.getvalue("check"))
 reboot = str(form.getvalue("reboot"))
 
 if dhcp == "tak":
-	if check == "1":
-		if reboot == "on":
-			redirect_reboot()
 	alines = open('/etc/network/interfaces').read().splitlines()
 	alines[10] = "allow-hotplug eth0"
 	alines[11] = "iface eth0 inet dhcp"
@@ -65,45 +61,45 @@ if dhcp == "tak":
 	blines[4] = ""
 	blines[5] = ""
 	open('interfaces2.php','w').write('\n'.join(blines))
-	if reboot == "None":
-		redirect_admin()
+
 elif adres == "None":
 	redirect_admin()
 elif maska == "None":
 	redirect_admin()
-else:
-	if check == "1":
-		if reboot == "on":
-			redirect_reboot()
-	if check == "None":
-		redirect_admin()
-	if check == "1":
-		alines = open('/etc/network/interfaces').read().splitlines()
-		alines[10] = "#allow-hotplug eth0"
-		alines[11] = "#iface eth0 inet dhcp"
-		alines[19] = "allow-hotplug eth0"
-		alines[20] = "iface eth0 inet static"
-		alines[21] = "address " + adres
-		if maska != "":
-			alines[22] = "netmask " + maska
-		else:
-			alines[22] = "#netmask "
-		if brama != "":
-			alines[23] = "gateway " + brama
-		else:
-			alines[23] = "#gateway "
-		if dns != "":
-			alines[24] = "dns-nameservers " + dns
-		else:
-			alines[24] = "#dns-nameservers "	
-		open('/etc/network/interfaces','w').write('\n'.join(alines))
+elif dhcp == "nie":
+	alines = open('/etc/network/interfaces').read().splitlines()
+	alines[10] = "#allow-hotplug eth0"
+	alines[11] = "#iface eth0 inet dhcp"
+	alines[19] = "allow-hotplug eth0"
+	alines[20] = "iface eth0 inet static"
+	alines[21] = "address " + adres
+	
+	if brama != "None":
+		alines[23] = "gateway " + brama
+	else:
+		alines[23] = "#gateway "
+	if dns != "None":
+		alines[24] = "dns-nameservers " + dns
+	else:
+		alines[24] = "#dns-nameservers "	
+		
+	open('/etc/network/interfaces','w').write('\n'.join(alines))
 
 	blines = open('interfaces2.php').read().splitlines()
 	blines[1] = "nie"
 	blines[2] = adres
 	blines[3] = maska
-	blines[4] = brama
-	blines[5] = dns
+	if brama == "None":
+		blines[4] = ""
+	else:
+		blines[4] = brama
+	if dns == "None":
+		blines[5] = ""
+	else:
+		blines[5] = dns
 	open('interfaces2.php','w').write('\n'.join(blines))
-	if reboot == "None":
-		redirect_admin()
+
+if reboot == "None":
+	redirect_admin()
+elif reboot == "on":
+	redirect_reboot()

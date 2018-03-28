@@ -1,4 +1,5 @@
 <?php
+
     session_start();
     if(!isset($_SESSION['login'])) {
         header('LOCATION:index.php'); die();
@@ -22,4 +23,5 @@
 	}
 
 	file_put_contents($img, file_get_contents($url));
+	
 ?>
