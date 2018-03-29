@@ -78,6 +78,11 @@ if condition:
 	elines[37] = "  hosts allow = " + str(net)
 	open('/etc/samba/smb.conf','w').write('\n'.join(elines))
 	
+	flines = open('/etc/nodogsplash/nodogsplash.conf').read().splitlines()
+	flines[1] = "GatewayAddress " + adres
+	open('/etc/nodogsplash/nodogsplash.conf','w').write('\n'.join(flines))
+	
+	
 	if reboot == "None":
 		redirect_admin()
 	elif reboot == "on":

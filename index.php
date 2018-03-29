@@ -7,19 +7,26 @@
 ?>
 <!DOCTYPE html>
 <html lang="pl">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-		<title>PIrouter</title>
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#343a40">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#343a40">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		
+	<title>PIrouter</title>
 
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-		<link href="style.css" rel="stylesheet">
-	</head>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<link href="style.css" rel="stylesheet">
+</head>
 
-	<body>
+<body>
 
 	<header id="TOP">
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -72,8 +79,8 @@
 		</div>
     </footer>
 	
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="jquery-3.3.1.js"></script>
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.min.js"></script>
 </body>
 </html>
