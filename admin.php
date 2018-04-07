@@ -40,7 +40,7 @@
 	<header id="TOP">
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 		
-			<a onclick="activate('')" class="navbar-brand <?php if(!isset($_SESSION['guest'])) { echo('text-danger'); } else { echo('text-success'); } ?>" href="#TOP">PIrouter</a>
+			<a onclick="activate('')" class="navbar-brand <?php if(!isset($_SESSION['guest']) && isset($_SESSION['login'])) { echo('text-danger'); } elseif(isset($_SESSION['guest']) && isset($_SESSION['login'])) { echo('text-warning'); } ?>" href="#TOP">PIrouter</a>
 			
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -49,6 +49,9 @@
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 				<ul class="navbar-nav mr-auto">
 				
+                    <li class="nav-item">
+						<a class="text-success nav-link active" href="PImedia.php">PImedia</a>
+                    </li>
 					<li class="nav-item" id="stat">
 						<a class="nav-link" onclick="activate('stat')"  href="#STAT">Status</a>
 					</li>
@@ -349,6 +352,7 @@
 			window.alert("Test prędkości w trakcie - odczekaj mniej niż minutę.");
 			setTimeout(function(){
 			update_test_image();
+			$(test).show();
 			}, tSpeedTest);
 			
 			

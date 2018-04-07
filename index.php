@@ -30,7 +30,21 @@
 
 	<header id="TOP">
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#TOP">PIrouter</a>
+        <a class="navbar-brand active" href="#TOP">PIrouter</a>
+            
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+				<ul class="navbar-nav mr-auto">
+				
+					<li class="nav-item">
+						<a class="text-success nav-link active href="PImedia.php">PImedia</a>
+                    </li>
+					
+				</ul>
+			</div>
 		</nav>
     </header>
 	

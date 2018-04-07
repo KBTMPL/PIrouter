@@ -75,7 +75,7 @@ if condition:
 	open('dnsmasq.php','w').write('\n'.join(dlines))
 
 	elines = open('/etc/samba/smb.conf').read().splitlines()
-	elines[37] = "  hosts allow = " + str(net)
+	elines[41] = "  hosts allow = " + str(net)
 	open('/etc/samba/smb.conf','w').write('\n'.join(elines))
 	
 	flines = open('/etc/nodogsplash/nodogsplash.conf').read().splitlines()
