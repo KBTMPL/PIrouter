@@ -50,7 +50,7 @@
 				<ul class="navbar-nav mr-auto">
 				
                     <li class="nav-item">
-						<a class="text-success nav-link active" href="PImedia.php">PImedia</a>
+						<a class="text-success nav-link active" href="#" onclick="myWindow=window.open('http://192.168.160.172:6680/iris/','','height=768, width=1024');">Spotify</a>
                     </li>
 					<li class="nav-item" id="stat">
 						<a class="nav-link" onclick="activate('stat')"  href="#STAT">Status</a>
@@ -177,9 +177,9 @@
 		
 		'); } ?>  
     
-	</form>
-	
-</div>
+        </div>
+        
+    </form>
 
 	<hr />
 	

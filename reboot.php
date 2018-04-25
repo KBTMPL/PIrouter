@@ -46,7 +46,7 @@
 				</div>
 			</div>
 	   
-		<?php /* if(isset($_SESSION['guest'])) { echo('<h6 class="mt-5 text-center">w trybie gościa nie :)</h6>'); } */ ?>
+		<?php if(isset($_SESSION['guest'])) { echo('<h6 class="mt-5 text-center">w trybie gościa nie :)</h6>'); }  ?>
 		
 </main>
 

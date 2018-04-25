@@ -1,9 +1,8 @@
 <?php
     session_start();
-/*    echo isset($_SESSION['login']);
     if(isset($_SESSION['login'])) {
-      header('LOCATION:index.php'); die();
-    }*/
+      header('LOCATION:admin.php');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -40,7 +39,7 @@
 				<ul class="navbar-nav mr-auto">
 				
 					<li class="nav-item">
-						<a class="text-success nav-link active href="PImedia.php">PImedia</a>
+						<a class="text-success nav-link active"  href="#" onclick="myWindow=window.open('http://192.168.160.172:6680/iris/','','height=768, width=1024');">Spotify</a>
                     </li>
 					
 				</ul>
@@ -64,7 +63,7 @@
 			}
 			}
 		?>
-	
+        
     <form method="post">
 	
 		<div class="form-group">
@@ -84,7 +83,7 @@
     </form>
 	
 		<h6 class="mt-5 text-center text-danger">w trybie gościa zablokowane jest ingerowanie w ustawienia routera</h6>
-	
+    
 	</main>
 
 	<footer class="footer">
