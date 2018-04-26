@@ -343,7 +343,7 @@
 		</div>
         
         <div class="form-group">
-			<label for="cse">Skrót użytkownika:</label>
+			<label for="cse">Prywatny składnik uwierzytelnienia:</label>
 			<input type="text" class="form-control" id="cse" name="cse"  autocomplete="off" value="<?php echo($spotify_data[4]); ?>" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
 		</div>	
 	
