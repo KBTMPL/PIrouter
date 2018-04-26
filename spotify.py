@@ -25,9 +25,10 @@ form = cgi.FieldStorage()
 
 reboot = "None"
 
-name =  str(form.getvalue("ssid"))
-chnl = str(form.getvalue("channel"))
-pwd  = str(form.getvalue("wpa_passphrase"))
+login =  str(form.getvalue("login"))
+password = str(form.getvalue("pass"))
+client_id  = str(form.getvalue("cid"))
+client_secret  = str(form.getvalue("cse"))
 check = str(form.getvalue("check"))
 
 reboot = str(form.getvalue("reboot"))
@@ -35,17 +36,19 @@ reboot = str(form.getvalue("reboot"))
 ###
 
 if check == '1':
-    alines = open('/etc/hostapd/hostapd.conf').read().splitlines()
-    alines[2] = "ssid=" + name
-    alines[4] = "channel=" + chnl
-    alines[9] = "wpa_passphrase=" + pwd
-    open('/etc/hostapd/hostapd.conf','w').write('\n'.join(alines))
+    alines = open('/etc/mopidy/mopidy.conf').read().splitlines()
+    alines[30] = "username= " + login
+    alines[31] = "password= " + password
+    alines[32] = "client_id= " + client_id
+    alines[33] = "client_secret= " + client_secret
+    open('/etc/mopidy/mopidy.conf','w').write('\n'.join(alines))
 
-    blines = open('hostapd.php').read().splitlines()
-    blines[1] = name
-    blines[2] = chnl
-    blines[3] = pwd
-    open('hostapd.php','w').write('\n'.join(blines))
+    blines = open('spotify.php').read().splitlines()
+    blines[1] = login
+    blines[2] = password
+    blines[3] = client_id
+    blines[4] = client_secret
+    open('spotify.php','w').write('\n'.join(blines))
 
     if reboot == "None":
         redirect_admin()

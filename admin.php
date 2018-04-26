@@ -10,9 +10,8 @@
 	$interfaces_data = file('interfaces.php', FILE_IGNORE_NEW_LINES); // adres maska 1-2
 	$dnsmasq_data = file('dnsmasq.php', FILE_IGNORE_NEW_LINES); // poczatekd koniecd czas 1-3
 	$interfaces2_data = file('interfaces2.php', FILE_IGNORE_NEW_LINES); // isenabled adres maska brama dns 1-5
+    $spotify_data = file('spotify.php', FILE_IGNORE_NEW_LINES); // login pass id secret
 
-	/* naprawić ID skaczące po dokumencie - gdzie i jak */
-	/* stock value password */
 ?>
 <!doctype html>
 <html lang="pl">
@@ -49,8 +48,8 @@
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 				<ul class="navbar-nav mr-auto">
 				
-                    <li class="nav-item">
-						<a class="text-success nav-link active" href="#" onclick="myWindow=window.open('http://192.168.160.172:6680/iris/','','height=768, width=1024');">Spotify</a>
+                    <li class="nav-item" id="pimusic">
+						<a class="text-success nav-link active" href="#" onclick="myWindow=window.open('http://' + lan_ip + ':6680/iris/','','height=768, width=1024');">PImusic</a>
                     </li>
 					<li class="nav-item" id="stat">
 						<a class="nav-link" onclick="activate('stat')"  href="#STAT">Status</a>
@@ -63,6 +62,9 @@
 					</li>
 					<li class="nav-item" id="wan">
 						<a class="nav-link" onclick="activate('wan')" href="#WAN">Sieć rozległa</a>
+					</li>
+                    <li class="nav-item" id="spotify">
+						<a class="nav-link" onclick="activate('spotify')" href="#SPOTIFY">Spotify</a>
 					</li>
 					<li class="nav-item active">
 						<a class="text-warning nav-link" href="reboot.php">Uruchom ponownie</a>
@@ -145,6 +147,8 @@
     
     <form action="<?php if(!isset($_SESSION['guest'])) { echo('wlan.py'); } ?>" method="post">
 	
+    <?php if(isset($_SESSION['login'])) { echo('<input id="check1" name="check" type="hidden" value="1">'); } ?>
+        
 		<div class="form-group">
 			<label for="ssid">SSID:</label>
 			<input type="text" class="form-control" id="ssid" name="ssid" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,50}$" autocomplete="off" value="<?php echo($hostapd_data[1]); ?>" placeholder="przynajmniej jeden znak" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
@@ -177,9 +181,10 @@
 		
 		'); } ?>  
     
-        </div>
-        
+            
     </form>
+        
+</div>
 
 	<hr />
 	
@@ -188,6 +193,8 @@
 <h3 class="mt-5 text-center">Sieć lokalna</h3>
     
     <form action="<?php if(!isset($_SESSION['guest'])) { echo('addr.py'); } ?>" method="post">
+        
+    <?php if(isset($_SESSION['login'])) { echo('<input id="check2" name="check" type="hidden" value="1">'); } ?>
 
 		<div class="form-group">
 			<label for="adres">Adres IP:</label>
@@ -240,6 +247,8 @@
 <h3 class="mt-5 text-center">Sieć rozległa</h3>
     
     <form action="<?php if(!isset($_SESSION['guest'])) { echo('addr2.py'); } ?>" method="post">
+        
+    <?php if(isset($_SESSION['login'])) { echo('<input id="check3" name="check" type="hidden" value="1">'); } ?>
 		
 		<div class="form-group text-center">
 			<p class="small">aby skonfigurować adres statyczny wyłącz klienta DHCP</p>
@@ -298,6 +307,56 @@
 	</form>
 
 </div>
+    
+<hr />
+	
+<div id="SPOTIFY">
+
+<h3 class="mt-5 text-center">Konfiguracja Spotify</h3>
+    
+    <form action="<?php if(!isset($_SESSION['guest'])) { echo('spotify.py'); } ?>" method="post">
+        
+    <?php if(isset($_SESSION['login'])) { echo('<input id="check4" name="check" type="hidden" value="1">'); } ?>
+
+		<div class="form-group">
+			<label for="login">Login:</label>
+			<input type="text" class="form-control" id="login" name="login"  autocomplete="off" value="<?php echo($spotify_data[1]); ?>" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
+		</div>
+		
+		<div class="form-group">
+			<label for="pass">Hasło:</label>
+			<input type="password" class="form-control" id="pass" name="pass"  autocomplete="off" value="<?php if(!isset($_SESSION['guest'])) { echo($spotify_data[2]); } ?>" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
+		</div>	
+	
+        <div class="form-group">
+			<label for="cid">ID użytkownika:</label>
+			<input type="text" class="form-control" id="cid" name="cid"  autocomplete="off" value="<?php echo($spotify_data[3]); ?>" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
+		</div>
+        
+        <div class="form-group">
+			<label for="cse">Skrót użytkownika:</label>
+			<input type="text" class="form-control" id="cse" name="cse"  autocomplete="off" value="<?php echo($spotify_data[4]); ?>" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
+		</div>	
+	
+		<?php if(!isset($_SESSION['guest'])) { echo('
+	
+		<div class="form-group text-center row">
+			<div class="col-md-12">
+				<label for="reboot3">Zastosować konfigurację?</label>
+				<input type="checkbox" name="reboot" id="reboot4">
+			</div>
+		</div>
+	
+		<div class="text-center">
+			<button type="submit" name="submit" class="btn btn-dark">Zapisz</button>
+		</div>
+		
+		'); } ?>
+    
+	</form>
+
+</div>
+
 
 	</main>
 
@@ -325,7 +384,7 @@
 		
 		// animation of active anchors in navbar
 		function activate(id) {
-			var anchors = ["stat", "ap", "lan", "wan", "top"];
+			var anchors = ["stat", "ap", "lan", "wan", "top", "spotify"];
 			for ( i=0; i<=anchors.length; i++) {
 				if (anchors[i] == id) {
 				document.getElementById(id).classList.add("active");
@@ -387,24 +446,42 @@
 			repeater = setTimeout(siteRefresher, tRefresh);
 		}
 		
-        jQuery.get('ip_addr', function(data) {
-                var i = 0;
-                while(data[i] != " ") {
-                        document.getElementById('wan_ip').innerHTML += data[i];
-                        i++;
-                }
+        var lan_ip = '';
+        $.get('ip_addr', function(data) {
+            var i = 0;
+            while(data[i] != " ") {
+                document.getElementById('wan_ip').innerHTML += data[i];
+                    i++;
+            }
 
-                        i++;
-
-                while(data[i] != " ") {
-                        document.getElementById('lan_ip').innerHTML += data[i];
-                        i++;
+                    i++;
+            
+            while(data[i] != " ") {
+                document.getElementById('lan_ip').innerHTML += data[i];
+                    i++;
                 }
+            
+            lan_ip = document.getElementById('lan_ip').innerHTML;
         });
 
+        
+        function pimusic_check() {
+            $.get('checkip.py', function(data) {
+					if(data.trim() == 'True') {
+                        $(pimusic).show();
+                    }
+					if(data.trim() == 'False'){
+                        $(pimusic).hide();
+					}
+				});
+            }
 		
 		/* first run */
-		
+        
+            // get clients ip
+                //window.alert("My public IP address is: ", getRemoteHost());
+               
+        
 			// start siteRefresher
 				siteRefresher();
 				
@@ -419,6 +496,9 @@
 			// default visibility of speedtest img div
 				$(test).hide();
 		
+            // default visibility of pimusic
+                $(pimusic).hide();
+                pimusic_check();
 
 	</script>
 </body>

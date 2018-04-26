@@ -38,8 +38,8 @@
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 				<ul class="navbar-nav mr-auto">
 				
-					<li class="nav-item">
-						<a class="text-success nav-link active"  href="#" onclick="myWindow=window.open('http://192.168.160.172:6680/iris/','','height=768, width=1024');">Spotify</a>
+					<li class="nav-item" id="pimusic">
+						<a class="text-success nav-link active" href="#" onclick="myWindow=window.open('http://' + lan_ip + ':6680/iris/','','height=768, width=1024');">PImusic</a>
                     </li>
 					
 				</ul>
@@ -95,5 +95,36 @@
 	<script src="jquery-3.3.1.js"></script>
     <script src="popper.min.js"></script>
     <script src="bootstrap.min.js"></script>
+    <script>
+        var lan_ip = '';
+        $.get('ip_addr', function(data) {
+            var i = 0;
+            while(data[i] != " ") {
+                    i++;
+            }
+
+                    i++;
+            
+            while(data[i] != " ") {
+                lan_ip += data[i];
+                    i++;
+                }
+        });
+        
+        function pimusic_check() {
+            $.get('checkip.py', function(data) {
+                    if(data.trim() == 'True') {
+                        $(pimusic).show();
+                    }
+					if(data.trim() == 'False'){
+                        $(pimusic).hide();
+					}
+				});
+            }
+        
+            // default visibility of pimusic
+                $(pimusic).hide();
+                pimusic_check();
+    </script>
 </body>
 </html>
