@@ -173,8 +173,13 @@
 				<label for="reboot1">Zastosować konfigurację?</label>
 				<input type="checkbox" name="reboot" id="reboot1">
 			</div>
+            
+        '); } ?> 
+            
 		</div>
-		
+        
+		<?php if(!isset($_SESSION['guest'])) { echo('
+        
 		<div class="text-center">
 			<button type="submit" name="submit" class="btn btn-dark">Zapisz</button>
 		</div>
@@ -314,6 +319,10 @@
 
 <h3 class="mt-5 text-center">Konfiguracja Spotify</h3>
     
+    <div class="form-group text-center">
+        <p class="small">aby skonfigurować dostęp do Spotify wprowadź dane pozyskane z <a href="https://www.mopidy.com/authenticate/#spotify" target="_blank">tej</a> strony</p>
+    </div>
+        
     <form action="<?php if(!isset($_SESSION['guest'])) { echo('spotify.py'); } ?>" method="post">
         
     <?php if(isset($_SESSION['login'])) { echo('<input id="check4" name="check" type="hidden" value="1">'); } ?>
