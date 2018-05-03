@@ -39,7 +39,7 @@
 				<ul class="navbar-nav mr-auto">
 				
 					<li class="nav-item" id="pimusic">
-						<a class="text-success nav-link active" href="#" onclick="myWindow=window.open('http://' + lan_ip + ':6680/iris/','','height=768, width=1024');">PImusic</a>
+						<a class="text-success nav-link active" href="#" onclick="myWindow=window.open('http://' + lan_ipaddr + ':6680/iris/','','height=768, width=1024');">PImusic</a>
                     </li>
 					
 				</ul>
@@ -96,7 +96,7 @@
     <script src="popper.min.js"></script>
     <script src="bootstrap.min.js"></script>
     <script>
-        var lan_ip = '';
+        var lan_ipaddr = '';
         $.get('ip_addr', function(data) {
             var i = 0;
             while(data[i] != " ") {
@@ -106,7 +106,7 @@
                     i++;
             
             while(data[i] != " ") {
-                lan_ip += data[i];
+                lan_ipaddr += data[i];
                     i++;
                 }
         });

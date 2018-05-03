@@ -37,7 +37,7 @@
 <body onload="update_test_image()">
 
 	<header id="TOP">
-		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+		<nav class="navbar navbar-expand-xl navbar-dark fixed-top bg-dark">
 		
 			<a onclick="activate('')" class="navbar-brand <?php if(!isset($_SESSION['guest']) && isset($_SESSION['login'])) { echo('text-danger'); } elseif(isset($_SESSION['guest']) && isset($_SESSION['login'])) { echo('text-warning'); } ?>" href="#TOP">PIrouter</a>
 			
@@ -49,22 +49,23 @@
 				<ul class="navbar-nav mr-auto">
 				
                     <li class="nav-item" id="pimusic">
-						<a class="text-success nav-link active" href="#" onclick="myWindow=window.open('http://' + lan_ip + ':6680/iris/','','height=768, width=1024');">PImusic</a>
+						<a class="text-success nav-link active" href="#" onclick="myWindow=window.open('http://' + lan_ipaddr + ':6680/iris/','','height=768, width=1024');">PImusic</a>
                     </li>
+                    
 					<li class="nav-item" id="stat">
-						<a class="nav-link" onclick="activate('stat')"  href="#STAT">Status</a>
+						<a class="nav-link" onclick=""  href="#STAT">Status</a>
 					</li>
 					<li class="nav-item" id="ap">
-						<a class="nav-link" onclick="activate('ap')" href="#AP">Punkt dostępu</a>
+						<a class="nav-link" onclick="" href="#AP">Punkt dostępu</a>
 					</li>
 					<li class="nav-item" id="lan">
-						<a class="nav-link" onclick="activate('lan')" href="#LAN">Sieć lokalna</a>
+						<a class="nav-link" onclick="" href="#LAN">Sieć lokalna</a>
 					</li>
 					<li class="nav-item" id="wan">
-						<a class="nav-link" onclick="activate('wan')" href="#WAN">Sieć rozległa</a>
+						<a class="nav-link" onclick="" href="#WAN">Sieć rozległa</a>
 					</li>
                     <li class="nav-item" id="spotify">
-						<a class="nav-link" onclick="activate('spotify')" href="#SPOTIFY">Spotify</a>
+						<a class="nav-link" onclick="" href="#SPOTIFY">Spotify</a>
 					</li>
 					<li class="nav-item active">
 						<a class="text-warning nav-link" href="reboot.php">Uruchom ponownie</a>
@@ -85,6 +86,19 @@
 
 <div id="STAT">
 	<h3 class="mt-5 text-center">Status urządzenia</h3>
+	
+	<div class="alert alert-info">
+		<div class="row text-center mb-2">
+			<div id="canvas-holder" class="col-md-6 text-center">
+				Obciążenie CPU
+				<canvas id="chart-area1"></canvas>
+			</div>
+			<div id="canvas-holder" class="col-md-6 text-center">
+				Zajęcie pamięci RAM
+				<canvas id="chart-area2"></canvas>
+			</div>
+		</div>
+	</div>
 	
 	<div class="alert alert-info">
 		<div class="row text-center mb-2">
@@ -375,14 +389,16 @@
 		</div>
     </footer>
 
+	<script src="Chart.bundle.js"></script>
 	<script src="jquery-3.3.1.js"></script>
 	<script src="popper.min.js"></script>
 	<script src="bootstrap.min.js"></script>
 	<script> 
 		/* global variables */
 		
-			var tRefresh = 5000 // [ms]
-			var tSpeedTest = 40000 // [ms]
+			var tChart = 1000; // [ms]
+			var tRefresh = 5000; // [ms]
+			var tSpeedTest = 40000; // [ms]
 	
 	
 		// running scripts in background
@@ -393,7 +409,7 @@
 		
 		// animation of active anchors in navbar
 		function activate(id) {
-			var anchors = ["stat", "ap", "lan", "wan", "top", "spotify"];
+			var anchors = ["stat", "ap", "lan", "wan", "top"];
 			for ( i=0; i<=anchors.length; i++) {
 				if (anchors[i] == id) {
 				document.getElementById(id).classList.add("active");
@@ -455,7 +471,7 @@
 			repeater = setTimeout(siteRefresher, tRefresh);
 		}
 		
-        var lan_ip = '';
+        var lan_ipaddr = '';
         $.get('ip_addr', function(data) {
             var i = 0;
             while(data[i] != " ") {
@@ -467,6 +483,7 @@
             
             while(data[i] != " ") {
                 document.getElementById('lan_ip').innerHTML += data[i];
+		lan_ipaddr += data[i];
                     i++;
                 }
             
@@ -484,12 +501,71 @@
 					}
 				});
             }
+			
+		function get_charts_data() {
+			$.get('cpu.py', function(data) { cpu_load = parseFloat(data); }, 'text');
+			$.get('ram.py', function(data) { ram_load = parseFloat(data); }, 'text');
+            }
+			
+		function start_charts() {
+			var config1 = {
+			type: 'pie',
+			data: {
+				datasets: [{
+					data: [
+						parseFloat(cpu_load),
+						parseFloat(100-cpu_load),
+					],
+					backgroundColor: [
+						'#dc3545',
+						'#28a745',
+					],
+					label: 'Dataset 1'
+				}],
+				labels: [
+					'Obciążone',
+					'Dostępne',
+				]
+			},
+			options: {
+				responsive: true
+			}
+		};
+
+			var config2 = {
+			type: 'pie',
+			data: {
+				datasets: [{
+					data: [
+						parseFloat(ram_load),
+						parseFloat(100-ram_load),
+					],
+					backgroundColor: [
+						'#dc3545',
+						'#28a745',
+					],
+					label: 'Dataset 1'
+				}],
+				labels: [
+					'Obciążone',
+					'Dostępne',
+				]
+			},
+			options: {
+				responsive: true
+			}
+		};
+			
+			var ctx1 = document.getElementById('chart-area1').getContext('2d');
+			window.myPie = new Chart(ctx1, config1);
+			var ctx2 = document.getElementById('chart-area2').getContext('2d');
+			window.myPie = new Chart(ctx2, config2);
+		}
 		
 		/* first run */
         
-            // get clients ip
-                //window.alert("My public IP address is: ", getRemoteHost());
-               
+            var ram_load;
+            var cpu_load;   
         
 			// start siteRefresher
 				siteRefresher();
@@ -508,7 +584,18 @@
             // default visibility of pimusic
                 $(pimusic).hide();
                 pimusic_check();
+				
+			// first load of charts data
+				get_charts_data();
+				setTimeout(start_charts, tChart);
 
+		// charts
+		
+		
+		
+		
+			
+				
 	</script>
 </body>
 </html>
