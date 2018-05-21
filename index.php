@@ -52,11 +52,13 @@
 		<h3 class="mt-5 text-center">PIrouter</h3>
 
 		<?php
+			$user_data = file('auth', FILE_IGNORE_NEW_LINES);
+
 			if(isset($_POST['submit'])){
 				$username = $_POST['username']; $password = $_POST['password'];
-			if($username === 'krzysztof' && hash('sha256', $password) === 'ef392bb64b73a01bfa321f8f8779bddef3965c953ac7e8271642fb250da364bd'){
+			if(hash('sha256', $username) === $user_data[0] && hash('sha256', $password) === $user_data[1]){
 				$_SESSION['login'] = true; header('LOCATION:admin.php'); die();
-			} elseif ($username === 'guest' && hash('sha256', $password) === '84983c60f7daadc1cb8698621f802c0d9f9a3c3c295c810748fb048115c186ec'){
+			} elseif (hash('sha256', $username) === '84983c60f7daadc1cb8698621f802c0d9f9a3c3c295c810748fb048115c186ec' && hash('sha256', $password) === '84983c60f7daadc1cb8698621f802c0d9f9a3c3c295c810748fb048115c186ec'){
 				$_SESSION['login'] = true; $_SESSION['guest'] = true; header('LOCATION:admin.php'); die();
 			} {
 				echo "<div class='alert alert-danger'>Login lub hasło się nie zgadza.</div>";

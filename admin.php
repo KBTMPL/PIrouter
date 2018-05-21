@@ -10,7 +10,8 @@
 	$interfaces_data = file('interfaces.php', FILE_IGNORE_NEW_LINES); // adres maska 1-2
 	$dnsmasq_data = file('dnsmasq.php', FILE_IGNORE_NEW_LINES); // poczatekd koniecd czas 1-3
 	$interfaces2_data = file('interfaces2.php', FILE_IGNORE_NEW_LINES); // isenabled adres maska brama dns 1-5
-    $spotify_data = file('spotify.php', FILE_IGNORE_NEW_LINES); // login pass id secret
+    	$spotify_data = file('spotify.php', FILE_IGNORE_NEW_LINES); // login pass id secret
+	$user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password
 
 ?>
 <!doctype html>
@@ -64,7 +65,7 @@
 					<li class="nav-item" id="wan">
 						<a class="nav-link" onclick="" href="#WAN">Sieć rozległa</a>
 					</li>
-                    <li class="nav-item" id="spotify">
+                    			<li class="nav-item" id="spotify">
 						<a class="nav-link" onclick="" href="#SPOTIFY">Spotify</a>
 					</li>
 					<li class="nav-item active">
@@ -170,7 +171,7 @@
 		
 		<div class="form-group">
 			<label for="wpa_passphrase">Hasło:</label>
-			<input type="password" class="form-control" id="wpa_passphrase" name="wpa_passphrase" pattern=".{8,63}" autocomplete="off" value="<?php echo($hostapd_data[3]); ?>" placeholder="od 8 do 63 znaków" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
+			<input type="password" class="form-control" id="wpa_passphrase" name="wpa_passphrase" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,63}$" autocomplete="off" value="<?php if(!isset($_SESSION['guest'])) { echo($hostapd_data[3]); } ?>" placeholder="od 8 do 63 znaków" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
 		</div>
 		
 		<div class="form-group text-center row">
@@ -396,7 +397,7 @@
 	<script> 
 		/* global variables */
 		
-			var tChart = 1000; // [ms]
+			var tChart = 1200; // [ms]
 			var tRefresh = 5000; // [ms]
 			var tSpeedTest = 40000; // [ms]
 	

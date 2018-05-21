@@ -1,5 +1,5 @@
 <?php /*
 PIrouter
 6
-admin123#
+opiekacz2000
 */ ?>
