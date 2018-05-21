@@ -10,8 +10,8 @@
 	$interfaces_data = file('interfaces.php', FILE_IGNORE_NEW_LINES); // adres maska 1-2
 	$dnsmasq_data = file('dnsmasq.php', FILE_IGNORE_NEW_LINES); // poczatekd koniecd czas 1-3
 	$interfaces2_data = file('interfaces2.php', FILE_IGNORE_NEW_LINES); // isenabled adres maska brama dns 1-5
-    	$spotify_data = file('spotify.php', FILE_IGNORE_NEW_LINES); // login pass id secret
-	$user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password
+    $spotify_data = file('spotify.php', FILE_IGNORE_NEW_LINES); // login pass id secret
+	// $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password
 
 ?>
 <!doctype html>
@@ -65,8 +65,11 @@
 					<li class="nav-item" id="wan">
 						<a class="nav-link" onclick="" href="#WAN">Sieć rozległa</a>
 					</li>
-                    			<li class="nav-item" id="spotify">
+                    <li class="nav-item" id="spotify">
 						<a class="nav-link" onclick="" href="#SPOTIFY">Spotify</a>
+					</li>
+					<li class="nav-item" id="auth">
+						<a class="nav-link" onclick="" href="#AUTH">Dostęp</a>
 					</li>
 					<li class="nav-item active">
 						<a class="text-warning nav-link" href="reboot.php">Uruchom ponownie</a>
@@ -379,6 +382,55 @@
     
 	</form>
 
+</div>
+
+	<hr />
+	
+<div id="AUTH">
+	
+	<h3 class="mt-5 text-center">Dostęp do panelu zarządzania</h3>
+    
+    <form action="" method="post">
+	
+    <?php if(isset($_SESSION['login'])) { echo('<input id="check1" name="check" type="hidden" value="1">'); } ?>
+        
+		<div class="form-group">
+			<label for="ssid">Login:</label>
+			<input type="text" class="form-control" id="auth_username" name="auth_username" pattern="^[A-Za-z0-9_]{1,32}$" autocomplete="off" placeholder="conajmniej jeden znak" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
+		</div>
+		
+		<div class="form-group">
+			<label for="wpa_passphrase">Hasło:</label>
+			<input type="password" class="form-control" id="auth_password" name="auth_password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" autocomplete="off" placeholder="duża, mała, specjalny i minimum 8 znaków" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
+		</div>
+			
+		<?php if(!isset($_SESSION['guest'])) {
+		
+			if(isset($_POST['submit_auth'])){
+					$username = hash('sha256', $_POST['auth_username']);
+					$password = hash('sha256', $_POST['auth_password']);
+
+					$authfile = fopen('auth', 'w');
+					fwrite($authfile, $username."\n");
+					fwrite($authfile, $password."\n");
+					fclose($authfile);
+                }
+		}
+        ?> 
+            
+		</div>
+        
+		<?php if(!isset($_SESSION['guest'])) { echo('
+        
+		<div class="text-center">
+			<button type="submit_auth" name="submit_auth" class="btn btn-dark">Zapisz</button>
+		</div>
+		
+		'); } ?>  
+    
+            
+    </form>
+        
 </div>
 
 
