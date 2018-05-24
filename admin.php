@@ -11,7 +11,7 @@
 	$dnsmasq_data = file('dnsmasq.php', FILE_IGNORE_NEW_LINES); // poczatekd koniecd czas 1-3
 	$interfaces2_data = file('interfaces2.php', FILE_IGNORE_NEW_LINES); // isenabled adres maska brama dns 1-5
     $spotify_data = file('spotify.php', FILE_IGNORE_NEW_LINES); // login pass id secret
-	// $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password
+	$user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
 ?>
 <!doctype html>
@@ -80,7 +80,6 @@
 					<li class="nav-item active">
 						<a class="nav-link text-info" href="logout.php">Wyloguj się</a>
 					</li>
-					
 				</ul>
 			</div>
 		</nav>
@@ -298,7 +297,7 @@
 		<div class="form-group">
 			<label for="maskaw">Maska podsieci:</label>
 			<input type="text" class="form-control" id="maskaw" name="maska" placeholder="xxx.xxx.xxx.xxx" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" autocomplete="off" value="<?php echo($interfaces2_data[3]); ?>" <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
-		</div>	
+		</div>
 	
 		<div class="form-group">
 			<label for="brama">Brama domyślna:</label>
@@ -393,7 +392,17 @@
     <form action="" method="post">
 	
     <?php if(isset($_SESSION['login'])) { echo('<input id="check1" name="check" type="hidden" value="1">'); } ?>
-        
+
+		<div class="form-group">
+                        <label for="ssid">Obecny login:</label>
+                        <input type="text" class="form-control" id="auth_username_curr" name="auth_username_curr" pattern="^[A-Za-z0-9_]{1,32}$" autocomplete="off" placeholder="" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
+                </div>
+
+                <div class="form-group">
+                        <label for="wpa_passphrase">Obecne hasło:</label>
+                        <input type="password" class="form-control" id="auth_password_curr" name="auth_password_curr" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" autocomplete="off" placeholder="" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
+                </div>
+
 		<div class="form-group">
 			<label for="ssid">Login:</label>
 			<input type="text" class="form-control" id="auth_username" name="auth_username" pattern="^[A-Za-z0-9_]{1,32}$" autocomplete="off" placeholder="conajmniej jeden znak" required <?php if(isset($_SESSION['guest'])) { echo('disabled '); } ?>/>
@@ -407,13 +416,27 @@
 		<?php if(!isset($_SESSION['guest'])) {
 		
 			if(isset($_POST['submit_auth'])){
-					$username = hash('sha256', $_POST['auth_username']);
-					$password = hash('sha256', $_POST['auth_password']);
 
-					$authfile = fopen('auth', 'w');
-					fwrite($authfile, $username."\n");
-					fwrite($authfile, $password."\n");
-					fclose($authfile);
+					$curr_username = hash('sha256', $_POST['auth_username_curr']);
+					$curr_password = hash('sha256', $_POST['auth_password_curr']);
+
+					if($curr_username === $user_data[0] && $curr_password === $user_data[1]) {
+						$username = hash('sha256', $_POST['auth_username']);
+						$password = hash('sha256', $_POST['auth_password']);
+
+						$authfile = fopen('auth', 'w');
+						fwrite($authfile, $username."\n");
+						fwrite($authfile, $password."\n");
+						fclose($authfile);
+
+						if($curr_username === $username && $curr_password === $password) {
+							echo('<script>window.alert("Twoje hasło i login zmienione na takie same")</script>');
+						} else {
+							echo('<script>window.alert("Twoje hasło i login pomyślnie zmienione")</script>');
+						}
+					} else {
+						echo('<script>window.alert("Obecne hasło lub login się nie zgadzają")</script>');
+					}
                 }
 		}
         ?> 
