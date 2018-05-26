@@ -1,34 +1,34 @@
 #!/usr/bin/env python3
+import cgi
+import ipaddress
+
 print("Content-Type: text/html")
 print()
 
-import cgi, cgitb, ipaddress
 
-# code to convert netmask ip to cidr number
 def netmask_to_cidr(netmask):
-    '''
-    :param netmask: netmask ip addr (eg: 255.255.255.0)
-    :return: equivalent cidr number to given netmask ip (eg: 24)
-    '''
     return sum([bin(int(x)).count('1') for x in netmask.split('.')])
 
+
 def redirect_admin():
-	print("<!doctype html>")
-	print("<html><head><title>Ustawienie LAN</title>")
-	print("<meta charset='UTF-8'>")
-	print("<meta name='viewport' content='initial-scale=1.0'>")
-	print("<meta http-equiv='refresh' content='0; url=admin.php'>")
-	print("</head></html>")
+    print("<!doctype html>")
+    print("<html><head><title>Ustawienie LAN</title>")
+    print("<meta charset='UTF-8'>")
+    print("<meta name='viewport' content='initial-scale=1.0'>")
+    print("<meta http-equiv='refresh' content='0; url=admin.php'>")
+    print("</head></html>")
+
 
 def redirect_reboot():
-	print("<!doctype html>")
-	print("<html><head><title>Ustawienie LAN</title>")
-	print("<meta charset='UTF-8'>")
-	print("<meta name='viewport' content='initial-scale=1.0'>")
-	print("<meta http-equiv='refresh' content='0; url=reboot.php'>")
-	print("</head></html>")
-	
-#cgi.test()
+    print("<!doctype html>")
+    print("<html><head><title>Ustawienie LAN</title>")
+    print("<meta charset='UTF-8'>")
+    print("<meta name='viewport' content='initial-scale=1.0'>")
+    print("<meta http-equiv='refresh' content='0; url=reboot.php'>")
+    print("</head></html>")
+
+
+# cgi.test()
 form = cgi.FieldStorage()
 
 reboot = "None"
@@ -53,41 +53,41 @@ net = ipaddress.IPv4Network(inter.network)
 
 condition = (start < end) and (start in net) and (end in net) and (adresip in net)
 
-#condition = 1
+# condition = 1
 
 if check == '1':
     if condition:
         alines = open('/etc/network/interfaces').read().splitlines()
         alines[15] = "address " + adres
         alines[16] = "netmask " + maska
-        open('/etc/network/interfaces','w').write('\n'.join(alines))
+        open('/etc/network/interfaces', 'w').write('\n'.join(alines))
 
         blines = open('interfaces.php').read().splitlines()
         blines[1] = adres
         blines[2] = maska
-        open('interfaces.php','w').write('\n'.join(blines))
+        open('interfaces.php', 'w').write('\n'.join(blines))
 
         clines = open('/etc/dnsmasq.conf').read().splitlines()
         clines[0] = "dhcp-range=" + poczatekd + "," + koniecd + "," + czas
-        open('/etc/dnsmasq.conf','w').write('\n'.join(clines))
+        open('/etc/dnsmasq.conf', 'w').write('\n'.join(clines))
 
         dlines = open('dnsmasq.php').read().splitlines()
         dlines[1] = poczatekd
         dlines[2] = koniecd
         dlines[3] = czas
-        open('dnsmasq.php','w').write('\n'.join(dlines))
+        open('dnsmasq.php', 'w').write('\n'.join(dlines))
 
         elines = open('/etc/samba/smb.conf').read().splitlines()
         elines[41] = "  hosts allow = " + str(net)
-        open('/etc/samba/smb.conf','w').write('\n'.join(elines))
+        open('/etc/samba/smb.conf', 'w').write('\n'.join(elines))
 
         flines = open('/etc/nodogsplash/nodogsplash.conf').read().splitlines()
         flines[1] = "GatewayAddress " + adres
-        open('/etc/nodogsplash/nodogsplash.conf','w').write('\n'.join(flines))
+        open('/etc/nodogsplash/nodogsplash.conf', 'w').write('\n'.join(flines))
 
         glines = open('/etc/mopidy/mopidy.conf').read().splitlines()
         glines[51] = "hostname = " + adres
-        open('/etc/mopidy/mopidy.conf','w').write('\n'.join(glines))
+        open('/etc/mopidy/mopidy.conf', 'w').write('\n'.join(glines))
 
         if reboot == "None":
             redirect_admin()
