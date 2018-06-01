@@ -16,7 +16,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
 ?>
 <!doctype html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -65,28 +65,28 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
                     <a class="nav-link" onclick="" href="#STAT">Status</a>
                 </li>
                 <li class="nav-item" id="ap">
-                    <a class="nav-link" onclick="" href="#AP">Punkt dostępu</a>
+                    <a class="nav-link" onclick="" href="#AP">Access Point</a>
                 </li>
                 <li class="nav-item" id="lan">
-                    <a class="nav-link" onclick="" href="#LAN">Sieć lokalna</a>
+                    <a class="nav-link" onclick="" href="#LAN">Local Area Network</a>
                 </li>
                 <li class="nav-item" id="wan">
-                    <a class="nav-link" onclick="" href="#WAN">Sieć rozległa</a>
+                    <a class="nav-link" onclick="" href="#WAN">Wide Area Network</a>
                 </li>
                 <li class="nav-item" id="spotify">
                     <a class="nav-link" onclick="" href="#SPOTIFY">Spotify</a>
                 </li>
                 <li class="nav-item" id="auth">
-                    <a class="nav-link" onclick="" href="#AUTH">Dostęp</a>
+                    <a class="nav-link" onclick="" href="#AUTH">Authentication</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="text-warning nav-link" href="reboot.php">Uruchom ponownie</a>
+                    <a class="text-warning nav-link" href="reboot.php">Reboot</a>
                 </li>
                 <li class="nav-item active">
-                    <a onclick="fcall('poweroff.php');" class="text-danger nav-link" href="#">Wyłącz</a>
+                    <a onclick="fcall('poweroff.php');" class="text-danger nav-link" href="#">Shutdown</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link text-info" href="logout.php">Wyloguj się</a>
+                    <a class="nav-link text-info" href="logout.php">Logout</a>
                 </li>
             </ul>
         </div>
@@ -96,16 +96,16 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 <main class="container" id="main">
 
     <div id="STAT">
-        <h3 class="mt-5 text-center">Status urządzenia</h3>
+        <h3 class="mt-5 text-center">Device Status</h3>
 
         <div class="alert alert-info">
             <div class="row text-center mb-2">
                 <div id="canvas-holder" class="col-md-6 text-center">
-                    Obciążenie CPU
+                    CPU load
                     <canvas id="chart-area1"></canvas>
                 </div>
                 <div id="canvas-holder" class="col-md-6 text-center">
-                    Zajęcie pamięci RAM
+                    RAM load
                     <canvas id="chart-area2"></canvas>
                 </div>
             </div>
@@ -114,29 +114,29 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
         <div class="alert alert-info">
             <div class="row text-center mb-2">
                 <div id="lan_ip" class="col-md-12 text-center">
-                    Adres IP LAN:
+                    LAN IP address:
                 </div>
             </div>
 
             <div class="row text-center mb-2">
                 <div id="wan_ip" class="col-md-12 text-center">
-                    Adres IP WAN:
+                    WAN IP address:
                 </div>
             </div>
         </div>
 
         <div id="test_success" class="alert alert-info text-center">
-            Router posiada połączenie z internetem
+            Router has an Internet connection
         </div>
 
         <div id="test_failure" class="alert alert-danger text-center">
-            Router nie posiada połączenia z internetem
+            Router does not have an Internet connection
         </div>
 
         <div id="test_ability" class="alert alert-info">
             <div class="row text-center mb-2">
                 <div class="col-md-12 text-center">
-                    Test prędkości internetu
+                    Internet connection speed test
                 </div>
             </div>
 
@@ -148,19 +148,18 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
             <div class="row text-center mt-2">
                 <div class="col-md-12">
-                    <button type="button" class="btn btn-default btn-sm btn-dark" onclick="$(test).toggle()">Pokaż
-                        wynik
+                    <button type="button" class="btn btn-default btn-sm btn-dark" onclick="$(test).toggle()">Show result
                     </button>
 
                     <button id="perform_speedtest_button" type="button" class="btn btn-default btn-sm btn-dark"
-                            onclick="perform_speedtest()">Uruchom test
+                            onclick="perform_speedtest()">Run test
                     </button>
                 </div>
             </div>
         </div>
 
         <div class="alert alert-info text-center">
-            <p>Aktywne udziały serwera samba</p>
+            <p>Active samba shares</p>
 
             <div id="samba"></div>
 
@@ -172,7 +171,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
     <div id="AP">
 
-        <h3 class="mt-5 text-center">Punkt dostępu</h3>
+        <h3 class="mt-5 text-center">Access Point</h3>
 
         <form action="<?php if (!isset($_SESSION['guest'])) {
             echo('wlan.py');
@@ -185,26 +184,26 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             <div class="form-group">
                 <label for="ssid">SSID:</label>
                 <input type="text" class="form-control" id="ssid" name="ssid" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,50}$"
-                       autocomplete="off" value="<?php echo($hostapd_data[1]); ?>" placeholder="przynajmniej jeden znak"
+                       autocomplete="off" value="<?php echo($hostapd_data[1]); ?>" placeholder="at least one char"
                        required <?php if (isset($_SESSION['guest'])) {
                     echo('disabled ');
                 } ?>/>
             </div>
 
             <div class="form-group">
-                <label for="wpa_passphrase">Hasło:</label>
+                <label for="wpa_passphrase">Password:</label>
                 <input type="password" class="form-control" id="wpa_passphrase" name="wpa_passphrase"
                        pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,63}$" autocomplete="off"
                        value="<?php if (!isset($_SESSION['guest'])) {
                            echo($hostapd_data[3]);
-                       } ?>" placeholder="od 8 do 63 znaków" required <?php if (isset($_SESSION['guest'])) {
+                       } ?>" placeholder="8 to 63 chars" required <?php if (isset($_SESSION['guest'])) {
                     echo('disabled ');
                 } ?>/>
             </div>
 
             <div class="form-group text-center row">
                 <div class="col-md-6">
-                    <label for="channel">Kanał:</label>
+                    <label for="channel">Channel:</label>
                     <select id="channel" name="channel" <?php if (isset($_SESSION['guest'])) {
                         echo('disabled ');
                     } ?>>
@@ -222,7 +221,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
                     echo('
 		
 			<div class="col-md-6">
-				<label for="reboot1">Zastosować konfigurację?</label>
+				<label for="reboot1">Apply configuration?</label>
 				<input type="checkbox" name="reboot" id="reboot1">
 			</div>
             
@@ -235,7 +234,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
                 echo('
         
 		<div class="text-center">
-			<button type="submit" name="submit" class="btn btn-dark">Zapisz</button>
+			<button type="submit" name="submit" class="btn btn-dark">Save</button>
 		</div>
 		
 		');
@@ -250,7 +249,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
     <div id="LAN">
 
-        <h3 class="mt-5 text-center">Sieć lokalna</h3>
+        <h3 class="mt-5 text-center">Local Area Network</h3>
 
         <form action="<?php if (!isset($_SESSION['guest'])) {
             echo('addr.py');
@@ -261,7 +260,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             } ?>
 
             <div class="form-group">
-                <label for="adres">Adres IP:</label>
+                <label for="adres">IP address:</label>
                 <input type="text" class="form-control" id="adres" name="adres" placeholder="xxx.xxx.xxx.xxx"
                        pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" autocomplete="off"
                        value="<?php echo($interfaces_data[1]); ?>" required <?php if (isset($_SESSION['guest'])) {
@@ -270,7 +269,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             </div>
 
             <div class="form-group">
-                <label for="maska">Maska podsieci:</label>
+                <label for="maska">Subnet mask:</label>
                 <input type="text" class="form-control" id="maska" name="maska" placeholder="xxx.xxx.xxx.xxx"
                        pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" autocomplete="off"
                        value="<?php echo($interfaces_data[2]); ?>" required <?php if (isset($_SESSION['guest'])) {
@@ -279,7 +278,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             </div>
 
             <div class="form-group">
-                <label for="poczatekd">Pierwszy adres puli DHCP:</label>
+                <label for="poczatekd">DHCP pool starting address:</label>
                 <input type="text" class="form-control" id="poczatekd" name="poczatekd" placeholder="xxx.xxx.xxx.xxx"
                        pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" autocomplete="off"
                        value="<?php echo($dnsmasq_data[1]); ?>" required <?php if (isset($_SESSION['guest'])) {
@@ -288,7 +287,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             </div>
 
             <div class="form-group">
-                <label for="koniecd">Ostatni adres puli DHCP:</label>
+                <label for="koniecd">DHCP pool ending address:</label>
                 <input type="text" class="form-control" id="koniecd" name="koniecd" placeholder="xxx.xxx.xxx.xxx"
                        pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" autocomplete="off"
                        value="<?php echo($dnsmasq_data[2]); ?>" required <?php if (isset($_SESSION['guest'])) {
@@ -297,7 +296,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             </div>
 
             <div class="form-group">
-                <label for="czas">Czas trwania dzierżawy adresu:</label>
+                <label for="czas">Address lease time:</label>
                 <input type="text" class="form-control" id="czas" name="czas"
                        pattern="[\d]{1,10}[s]|[\d]{1,10}[m]|[\d]{1,10}[h]" placeholder="np. 120s 30m 1h"
                        autocomplete="off" value="<?php echo($dnsmasq_data[3]); ?>"
@@ -311,13 +310,13 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 	
 		<div class="form-group text-center row">
 			<div class="col-md-12">
-				<label for="reboot2">Zastosować konfigurację?</label>
+				<label for="reboot2">Apply configuration?</label>
 				<input type="checkbox" name="reboot" id="reboot2">
 			</div>
 		</div>
 	
 		<div class="text-center">
-			<button type="submit" name="submit" class="btn btn-dark">Zapisz</button>
+			<button type="submit" name="submit" class="btn btn-dark">Save</button>
 		</div>
 		
 		');
@@ -331,7 +330,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
     <div id="WAN">
 
-        <h3 class="mt-5 text-center">Sieć rozległa</h3>
+        <h3 class="mt-5 text-center">Wide Area Network</h3>
 
         <form action="<?php if (!isset($_SESSION['guest'])) {
             echo('addr2.py');
@@ -342,17 +341,17 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             } ?>
 
             <div class="form-group text-center">
-                <p class="small">aby skonfigurować adres statyczny wyłącz klienta DHCP</p>
-                <label for="dhcp">Klient DHCP:</label>
+                <p class="small">to configure static WAN you have to disable DHCP client</p>
+                <label for="dhcp">DHCP client:</label>
                 <select onchange="sh_wan_static_field()" id="dhcp" name="dhcp" <?php if (isset($_SESSION['guest'])) {
                     echo('disabled ');
                 } ?>>
                     <?php if ($interfaces2_data[1] == 'tak') {
-                        echo('<option value="tak" selected="selected">tak</option>');
-                        echo('<option value="nie">nie</option>');
+                        echo('<option value="tak" selected="selected">enabled</option>');
+                        echo('<option value="nie">disabled</option>');
                     } else {
-                        echo('<option value="tak">tak</option>');
-                        echo('<option value="nie" selected="selected">nie</option>');
+                        echo('<option value="tak">enabled</option>');
+                        echo('<option value="nie" selected="selected">disabled</option>');
                     }
                     ?>
                 </select>
@@ -361,7 +360,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             <div id="wan_static">
 
                 <div class="form-group">
-                    <label for="adresw">Adres IP:</label>
+                    <label for="adresw">IP address:</label>
                     <input type="text" class="form-control" id="adresw" name="adres" placeholder="xxx.xxx.xxx.xxx"
                            pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" autocomplete="off"
                            value="<?php echo($interfaces2_data[2]); ?>" <?php if (isset($_SESSION['guest'])) {
@@ -370,7 +369,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
                 </div>
 
                 <div class="form-group">
-                    <label for="maskaw">Maska podsieci:</label>
+                    <label for="maskaw">Subnet mask:</label>
                     <input type="text" class="form-control" id="maskaw" name="maska" placeholder="xxx.xxx.xxx.xxx"
                            pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" autocomplete="off"
                            value="<?php echo($interfaces2_data[3]); ?>" <?php if (isset($_SESSION['guest'])) {
@@ -379,7 +378,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
                 </div>
 
                 <div class="form-group">
-                    <label for="brama">Brama domyślna:</label>
+                    <label for="brama">Default gateway:</label>
                     <input type="text" class="form-control" id="brama" name="brama" placeholder="xxx.xxx.xxx.xxx"
                            pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" autocomplete="off"
                            value="<?php echo($interfaces2_data[4]); ?>" <?php if (isset($_SESSION['guest'])) {
@@ -388,7 +387,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
                 </div>
 
                 <div class="form-group">
-                    <label for="dns">Serwer nazw domenowych:</label>
+                    <label for="dns">DNS:</label>
                     <input type="text" class="form-control" id="dns" name="dns" placeholder="xxx.xxx.xxx.xxx"
                            pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" autocomplete="off"
                            value="<?php echo($interfaces2_data[5]); ?>" <?php if (isset($_SESSION['guest'])) {
@@ -403,13 +402,13 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 		
 		<div class="form-group text-center row">
 			<div class="col-md-12">
-				<label for="reboot3">Zastosować konfigurację?</label>
+				<label for="reboot3">Apply configuration?</label>
 				<input type="checkbox" name="reboot" id="reboot3">
 			</div>
 		</div>
 	
 		<div class="text-center">
-			<button type="submit" name="submit" class="btn btn-dark">Zapisz</button>
+			<button type="submit" name="submit" class="btn btn-dark">Save</button>
 		</div>
 		
 		');
@@ -423,11 +422,11 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
     <div id="SPOTIFY">
 
-        <h3 class="mt-5 text-center">Konfiguracja Spotify</h3>
+        <h3 class="mt-5 text-center">Spotify configuration</h3>
 
         <div class="form-group text-center">
-            <p class="small">aby skonfigurować dostęp do Spotify wprowadź dane pozyskane z <a
-                        href="https://www.mopidy.com/authenticate/#spotify" target="_blank">tej</a> strony</p>
+            <p class="small">to configure Spotify properly insert data generated on <a
+                        href="https://www.mopidy.com/authenticate/#spotify" target="_blank">this</a> website</p>
         </div>
 
         <form action="<?php if (!isset($_SESSION['guest'])) {
@@ -447,7 +446,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             </div>
 
             <div class="form-group">
-                <label for="pass">Hasło:</label>
+                <label for="pass">Password:</label>
                 <input type="password" class="form-control" id="pass" name="pass" autocomplete="off"
                        value="<?php if (!isset($_SESSION['guest'])) {
                            echo($spotify_data[2]);
@@ -457,7 +456,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             </div>
 
             <div class="form-group">
-                <label for="cid">ID użytkownika:</label>
+                <label for="cid">Client ID:</label>
                 <input type="text" class="form-control" id="cid" name="cid" autocomplete="off"
                        value="<?php echo($spotify_data[3]); ?>" required <?php if (isset($_SESSION['guest'])) {
                     echo('disabled ');
@@ -465,7 +464,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             </div>
 
             <div class="form-group">
-                <label for="cse">Prywatny składnik uwierzytelnienia:</label>
+                <label for="cse">Client secret:</label>
                 <input type="text" class="form-control" id="cse" name="cse" autocomplete="off"
                        value="<?php echo($spotify_data[4]); ?>" required <?php if (isset($_SESSION['guest'])) {
                     echo('disabled ');
@@ -477,13 +476,13 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 	
 		<div class="form-group text-center row">
 			<div class="col-md-12">
-				<label for="reboot3">Zastosować konfigurację?</label>
+				<label for="reboot3">Apply configuration?</label>
 				<input type="checkbox" name="reboot" id="reboot4">
 			</div>
 		</div>
 	
 		<div class="text-center">
-			<button type="submit" name="submit" class="btn btn-dark">Zapisz</button>
+			<button type="submit" name="submit" class="btn btn-dark">Save</button>
 		</div>
 		
 		');
@@ -497,7 +496,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
     <div id="AUTH">
 
-        <h3 class="mt-5 text-center">Dostęp do panelu zarządzania</h3>
+        <h3 class="mt-5 text-center">Authentication data</h3>
 
         <form action="" method="post">
 
@@ -506,7 +505,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             } ?>
 
             <div class="form-group">
-                <label for="ssid">Obecny login:</label>
+                <label for="ssid">Current login:</label>
                 <input type="text" class="form-control" id="auth_username_curr" name="auth_username_curr"
                        pattern="^[A-Za-z0-9_]{1,32}$" autocomplete="off" placeholder=""
                        required <?php if (isset($_SESSION['guest'])) {
@@ -515,7 +514,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             </div>
 
             <div class="form-group">
-                <label for="wpa_passphrase">Obecne hasło:</label>
+                <label for="wpa_passphrase">Current password:</label>
                 <input type="password" class="form-control" id="auth_password_curr" name="auth_password_curr"
                        pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" autocomplete="off"
                        placeholder="" required <?php if (isset($_SESSION['guest'])) {
@@ -526,17 +525,17 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             <div class="form-group">
                 <label for="ssid">Login:</label>
                 <input type="text" class="form-control" id="auth_username" name="auth_username"
-                       pattern="^[A-Za-z0-9_]{1,32}$" autocomplete="off" placeholder="conajmniej jeden znak"
+                       pattern="^[A-Za-z0-9_]{1,32}$" autocomplete="off" placeholder="at least one char"
                        required <?php if (isset($_SESSION['guest'])) {
                     echo('disabled ');
                 } ?>/>
             </div>
 
             <div class="form-group">
-                <label for="wpa_passphrase">Hasło:</label>
+                <label for="wpa_passphrase">Password:</label>
                 <input type="password" class="form-control" id="auth_password" name="auth_password"
                        pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" autocomplete="off"
-                       placeholder="duża, mała, specjalny i minimum 8 znaków"
+                       placeholder="UpperCase, LowerCase, Number/SpecialChar and min 8 Chars"
                        required <?php if (isset($_SESSION['guest'])) {
                     echo('disabled ');
                 } ?>/>
@@ -559,12 +558,12 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
                         fclose($authfile);
 
                         if ($curr_username === $username && $curr_password === $password) {
-                            echo('<script>window.alert("Twoje hasło i login zmienione na takie same")</script>');
+                            echo('<script>window.alert("You changed your login and password for the same one")</script>');
                         } else {
-                            echo('<script>window.alert("Twoje hasło i login pomyślnie zmienione")</script>');
+                            echo('<script>window.alert("Your login and/or password have been changed successfully")</script>');
                         }
                     } else {
-                        echo('<script>window.alert("Obecne hasło lub login się nie zgadzają")</script>');
+                        echo('<script>window.alert("Your login and/or password does not match")</script>');
                     }
                 }
             }
@@ -576,7 +575,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
         echo('
         
 		<div class="text-center">
-			<button type="submit_auth" name="submit_auth" class="btn btn-dark">Zapisz</button>
+			<button type="submit_auth" name="submit_auth" class="btn btn-dark">Save</button>
 		</div>
 		
 		');
@@ -632,7 +631,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
     // onclick speedtest perform and image reload
     function perform_speedtest() {
         fcall('speed.php');
-        window.alert("Test prędkości w trakcie - odczekaj mniej niż minutę.");
+        window.alert("Hold on speed test may take a while...");
         setTimeout(function () {
             update_test_image();
             $(test).show();

@@ -6,7 +6,7 @@ if (!isset($_SESSION['login'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -39,7 +39,7 @@ if (!isset($_SESSION['login'])) {
 
     <h3 class="mt-5 text-center">PIrouter</h3>
 
-    <h6 class="mt-5 text-center">urządzenie uruchamia się ponownie</h6>
+    <h6 class="mt-5 text-center">the device is rebooting</h6>
 
     <div class="progress">
         <div id="dynamic" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
@@ -49,7 +49,7 @@ if (!isset($_SESSION['login'])) {
     </div>
 
     <?php if (isset($_SESSION['guest'])) {
-        echo('<h6 class="mt-5 text-center">w trybie gościa nie :)</h6>');
+        echo('<h6 class="mt-5 text-center">not in the guest mode :)</h6>');
     } ?>
 
 </main>

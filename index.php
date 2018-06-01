@@ -5,7 +5,7 @@ if (isset($_SESSION['login'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -70,7 +70,7 @@ if (isset($_SESSION['login'])) {
             die();
         }
         {
-            echo "<div class='alert alert-danger'>Login lub hasło się nie zgadza.</div>";
+            echo "<div class='alert alert-danger'>Invalid login and/or password</div>";
         }
     }
     ?>
@@ -83,7 +83,7 @@ if (isset($_SESSION['login'])) {
         </div>
 
         <div class="form-group">
-            <label for="pwd">Hasło:</label>
+            <label for="pwd">Password:</label>
             <input type="password" class="form-control" id="pwd" name="password" placeholder="guest" required>
         </div>
 
@@ -93,7 +93,7 @@ if (isset($_SESSION['login'])) {
 
     </form>
 
-    <h6 class="mt-5 text-center text-danger">w trybie gościa zablokowane jest ingerowanie w ustawienia routera</h6>
+    <h6 class="mt-5 text-center text-danger">guest mode has limited access (view only)</h6>
 
 </main>
 
