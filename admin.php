@@ -175,7 +175,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
         <form action="<?php if (!isset($_SESSION['guest'])) {
             echo('wlan.py');
-        } ?>" method="post">
+        } else { echo('#'); } ?>" method="post">
 
             <?php if (isset($_SESSION['login'])) {
                 echo('<input id="check1" name="check" type="hidden" value="1">');
@@ -253,7 +253,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
         <form action="<?php if (!isset($_SESSION['guest'])) {
             echo('addr.py');
-        } ?>" method="post">
+        } else { echo('#'); } ?>" method="post">
 
             <?php if (isset($_SESSION['login'])) {
                 echo('<input id="check2" name="check" type="hidden" value="1">');
@@ -334,7 +334,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
         <form action="<?php if (!isset($_SESSION['guest'])) {
             echo('addr2.py');
-        } ?>" method="post">
+        } else { echo('#'); } ?>" method="post">
 
             <?php if (isset($_SESSION['login'])) {
                 echo('<input id="check3" name="check" type="hidden" value="1">');
@@ -431,7 +431,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
         <form action="<?php if (!isset($_SESSION['guest'])) {
             echo('spotify.py');
-        } ?>" method="post">
+        } else { echo('#'); } ?>" method="post">
 
             <?php if (isset($_SESSION['login'])) {
                 echo('<input id="check4" name="check" type="hidden" value="1">');
