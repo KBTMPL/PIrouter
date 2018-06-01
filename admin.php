@@ -100,11 +100,11 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
         <div class="alert alert-info">
             <div class="row text-center mb-2">
-                <div id="canvas-holder" class="col-md-6 text-center">
+                <div id="canvas-holder1" class="col-md-6 text-center">
                     CPU load
                     <canvas id="chart-area1"></canvas>
                 </div>
-                <div id="canvas-holder" class="col-md-6 text-center">
+                <div id="canvas-holder2" class="col-md-6 text-center">
                     RAM load
                     <canvas id="chart-area2"></canvas>
                 </div>
@@ -498,10 +498,10 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
 
         <h3 class="mt-5 text-center">Authentication data</h3>
 
-        <form action="" method="post">
+        <form action="#" method="post">
 
             <?php if (isset($_SESSION['login'])) {
-                echo('<input id="check1" name="check" type="hidden" value="1">');
+                echo('<input id="check5" name="check" type="hidden" value="1">');
             } ?>
 
             <div class="form-group">
@@ -569,20 +569,18 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
             }
             ?>
 
-    </div>
-
-    <?php if (!isset($_SESSION['guest'])) {
-        echo('
-        
-		<div class="text-center">
-			<button type="submit_auth" name="submit_auth" class="btn btn-dark">Save</button>
-		</div>
-		
-		');
-    } ?>
+            <?php if (!isset($_SESSION['guest'])) {
+                echo('
+                
+                <div class="text-center">
+                    <button type="submit" name="submit_auth" class="btn btn-dark">Save</button>
+                </div>
+                
+                ');
+            } ?>
 
 
-    </form>
+        </form>
 
     </div>
 
