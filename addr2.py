@@ -28,7 +28,7 @@ def redirect_reboot():
     print("</head></html>")
 
 
-# cgi.test()
+# access post data sent from html
 form = cgi.FieldStorage()
 
 reboot = "None"
@@ -42,6 +42,7 @@ check = str(form.getvalue("check"))
 
 reboot = str(form.getvalue("reboot"))
 
+# check if configuration makes sense
 if maska != "None" and adres != "None":
     cidr = str(netmask_to_cidr(maska))
     inter = ipaddress.IPv4Interface(adres + "/" + cidr)
@@ -49,6 +50,7 @@ if maska != "None" and adres != "None":
     if brama != "None":
         gateway = ipaddress.ip_address(brama)
         condition = gateway in net
+# if so proceed with editing the configuration files
 
 if check == '1':
     # if condition:

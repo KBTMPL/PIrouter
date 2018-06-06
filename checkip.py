@@ -10,7 +10,7 @@ print()
 def netmask_to_cidr(netmask):
     return sum([bin(int(x)).count('1') for x in netmask.split('.')])
 
-
+# get needed ip addreses
 client_ip = ipaddress.ip_address(os.environ['REMOTE_ADDR'])
 host_ip = ni.ifaddresses('wlan0')[ni.AF_INET][0]['addr']
 host_netmask = str(netmask_to_cidr(ni.ifaddresses('wlan0')[ni.AF_INET][0]['netmask']))
@@ -18,4 +18,5 @@ host_netmask = str(netmask_to_cidr(ni.ifaddresses('wlan0')[ni.AF_INET][0]['netma
 host_interface = ipaddress.IPv4Interface(host_ip + '/' + host_netmask)
 host_network = ipaddress.IPv4Network(host_interface.network)
 
+# check if client is eligible and print the result
 print(client_ip in host_network)

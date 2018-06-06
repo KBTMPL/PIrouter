@@ -23,7 +23,7 @@ def redirect_reboot():
     print("</head></html>")
 
 
-# cgi.test()
+# access post data sent from html
 form = cgi.FieldStorage()
 
 reboot = "None"

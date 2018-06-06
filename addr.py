@@ -28,7 +28,7 @@ def redirect_reboot():
     print("</head></html>")
 
 
-# cgi.test()
+# access post data sent from html
 form = cgi.FieldStorage()
 
 reboot = "None"
@@ -51,7 +51,9 @@ end = ipaddress.ip_address(koniecd)
 inter = ipaddress.IPv4Interface(adres + "/" + cidr)
 net = ipaddress.IPv4Network(inter.network)
 
+# check if configuration makes sense
 condition = (start < end) and (start in net) and (end in net) and (adresip in net)
+# if so proceed with editing the configuration files
 
 # condition = 1
 

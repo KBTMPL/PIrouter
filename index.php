@@ -107,6 +107,9 @@ if (isset($_SESSION['login'])) {
 <script src="popper.min.js"></script>
 <script src="bootstrap.min.js"></script>
 <script>
+    
+    // assign lan and wan ip
+    
     var lan_ipaddr = '';
     $.get('ip_addr', function (data) {
         var i = 0;
@@ -122,6 +125,8 @@ if (isset($_SESSION['login'])) {
         }
     });
 
+    // check if client is elligible for PImusic feature
+    
     function pimusic_check() {
         $.get('checkip.py', function (data) {
             if (data.trim() == 'True') {

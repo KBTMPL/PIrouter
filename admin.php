@@ -5,7 +5,7 @@ if (!isset($_SESSION['login'])) {
     die();
 }
 
-// load data forms currently set
+// load data for forms currently set
 
 $hostapd_data = file('hostapd.php', FILE_IGNORE_NEW_LINES); // name channel pwd 1-3
 $interfaces_data = file('interfaces.php', FILE_IGNORE_NEW_LINES); // adres maska 1-2
@@ -668,6 +668,8 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
         repeater = setTimeout(siteRefresher, tRefresh);
     }
 
+    // assign lan and wan ip
+    
     var lan_ipaddr = '';
     $.get('ip_addr', function (data) {
         var i = 0;
@@ -687,6 +689,7 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
         lan_ip = document.getElementById('lan_ip').innerHTML;
     });
 
+    // check if client is elligible for PImusic feature
 
     function pimusic_check() {
         $.get('checkip.py', function (data) {
@@ -699,6 +702,8 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
         });
     }
 
+    // load data for charts
+    
     function get_charts_data() {
         $.get('cpu.py', function (data) {
             cpu_load = parseFloat(data);
@@ -708,6 +713,8 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
         }, 'text');
     }
 
+    // start up charts
+    
     function start_charts() {
         var config1 = {
             type: 'pie',
@@ -791,9 +798,6 @@ $user_data = file('auth', FILE_IGNORE_NEW_LINES); // username password hashes
     // first load of charts data
     get_charts_data();
     setTimeout(start_charts, tChart);
-
-    // charts
-
 
 </script>
 </body>
